@@ -88,7 +88,7 @@
 <meta property="og:description" content="稳定性测试是保障客户端稳定性的一种手段，致力于提前发现问题，收集更多异常信息，复现线上闪退。当Android客户端发生闪退时，是如何捕获到闪退信息的呢？首先，需要了解一下Java中的异常. Java的异常 Java语言在设计之初就提供了相对完美的异常处理机制，所有的异常类是从java.lang,Exception类继承的子类，Exception类是Throwable类的子类，除了Exception">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/06/23/Android全局异常捕获/androidexception.png">
-<meta property="og:updated_time" content="2018-06-23T00:58:17.000Z">
+<meta property="og:updated_time" content="2018-06-30T03:07:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android全局异常捕获">
 <meta name="twitter:description" content="稳定性测试是保障客户端稳定性的一种手段，致力于提前发现问题，收集更多异常信息，复现线上闪退。当Android客户端发生闪退时，是如何捕获到闪退信息的呢？首先，需要了解一下Java中的异常. Java的异常 Java语言在设计之初就提供了相对完美的异常处理机制，所有的异常类是从java.lang,Exception类继承的子类，Exception类是Throwable类的子类，除了Exception">
@@ -328,6 +328,7 @@
 <p>Java的异常</p>
 <p>Java语言在设计之初就提供了相对完美的异常处理机制，所有的异常类是从java.lang,Exception类继承的子类，Exception类是Throwable类的子类，除了Exception,Throwable还有一个子类Error，在java中只有Throwable类型的实例才可以被抛出（throw）或者（catch）,它是异常处理机制的基本组成部分。</p>
 <p><img src="/2018/06/23/Android全局异常捕获/androidexception.png" alt="logo"> </p>
+<a id="more"></a>
 <p>Exception和Error体现了Java平台设计者对不同异常情况的分类，Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获。</p>
 <p>Error是指在正常情况下，不太可能出现的情况，绝大部分的Error都会导致程序处理非正常的，不可恢复的状态，例如典型的OutOfMemoryError.</p>
 <p>Exception分为可检查异常（checked）和不检查异常（unchecked）异常，可检查异常必须在代码里显式进行捕获处理，这是编译期检查的一部分。</p>
