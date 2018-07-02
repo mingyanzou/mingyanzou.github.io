@@ -229,7 +229,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/30/Synchronized实现原理/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/30/Synchronized原理以及锁的升级、降级/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alvin Z">
@@ -248,7 +248,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/30/Synchronized实现原理/" itemprop="url">Synchronized实现原理</a></h1>
+                <a class="post-title-link" href="/2018/06/30/Synchronized原理以及锁的升级、降级/" itemprop="url">Synchronized原理以及锁的升级、降级</a></h1>
         
 
         <div class="post-meta">
@@ -323,13 +323,9 @@
         
           <p>​    Synchronized是Java内建的同步机制，所有也有人称其为Intrinsic Locking,它提供了互斥的语意和可见性，当一个线程已经获取当前锁时，其他试图获取的线程只能等待或阻塞在那里。</p>
 <p>​    那么Synchronized实现的原理是怎样的呢？</p>
-<p>​    首先写一个SynchronizedDemo示例，然后通过查看java编译生成的字节码，分析Synchronized原理。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedDemo</span></span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">void</span> <span class="title">method</span>()</span>&#123;</span><br><span class="line">    	<span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">        	System.out.println(<span class="string">"method start!"</span>);</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>反编译后的字节码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Compiled from <span class="string">"SynchronizedDemo.java"</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">javabasic</span>.<span class="title">SynchronizedDemo</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> javabasic.SynchronizedDemo();</span><br><span class="line">    Code:</span><br><span class="line">       <span class="number">0</span>: aload_0</span><br><span class="line">       1: invokespecial #1                  // Method java/lang/Object."&lt;init&gt;":()V</span><br><span class="line">       <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>;</span><br><span class="line">    Code:</span><br><span class="line">       <span class="number">0</span>: aload_0</span><br><span class="line">       <span class="number">1</span>: dup</span><br><span class="line">       <span class="number">2</span>: astore_1</span><br><span class="line">       <span class="number">3</span>: monitorenter</span><br><span class="line">       4: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;</span><br><span class="line">       7: ldc           #3                  // String method start</span><br><span class="line">       9: invokevirtual #4                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V</span><br><span class="line">      <span class="number">12</span>: aload_1</span><br><span class="line">      <span class="number">13</span>: monitorexit</span><br><span class="line">      <span class="number">14</span>: goto          <span class="number">22</span></span><br><span class="line">      <span class="number">17</span>: astore_2</span><br><span class="line">      <span class="number">18</span>: aload_1</span><br><span class="line">      <span class="number">19</span>: monitorexit</span><br><span class="line">      <span class="number">20</span>: aload_2</span><br><span class="line">      <span class="number">21</span>: athrow</span><br><span class="line">      <span class="number">22</span>: <span class="keyword">return</span></span><br><span class="line">    Exception table:</span><br><span class="line">       from    to  target type</span><br><span class="line">           <span class="number">4</span>    <span class="number">14</span>    <span class="number">17</span>   any</span><br><span class="line">          <span class="number">17</span>    <span class="number">20</span>    <span class="number">17</span>   any</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/30/Synchronized实现原理/#more" rel="contents">
+            <a class="btn" href="/2018/06/30/Synchronized原理以及锁的升级、降级/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
